@@ -14,20 +14,26 @@ grammar Cmm;
 
 import CommonLexerRules;
 
-program returns [Program ast]: 
-
-		 ((varDefinitions*  functionDefinitions+) 
-		  	| (functionDefinitions+ varDefinitions*)  
-		 )   									{ $ast = new Program($functionDefinitions.start.getLine(), $functionDefinitions.start.getCharPositionInLine()+1,    
-     	                 					         								$varDefinitions.ast, $functionDefinitions.ast); }   	
-		   	
-        
-        ;
+program returns [Program ast]: 	
+		(varDefinition | functionDefinition)*
+		('void' 'main' '(' ')' statementBlock)
+ 		(varDefinition | functionDefinition)*
+    ;    
+    
+varDefinition returns [VarDefinition ast]:
+	type ID	(',' ID)* ';' { $ast=new VarDefinition($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text, $type.ast); }
+	|  arrayType ID  ';'  { $ast=new VarDefinition($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text, $arrayType.ast); }
+	; 
+	
+functionDefinition returns [FunctionDefinition ast]:
+            	functionType statementBlock 	 			
+       ;
 						
 varDefinitions returns [List<VarDefinition> ast = new ArrayList<VarDefinition>()]:
-          	type ID	(',' ID)* ';'					{ $ast.add(new VarDefinition($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text, $type.ast)); }
+          	(type ID	(',' ID)* ';'					{ $ast.add(new VarDefinition($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text, $type.ast)); }
           	| arrayType ID  ';'     					{ $ast.add(new VarDefinition($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text, $arrayType.ast)); }
-       ; 
+       		)*
+       ;    
 
 arrayType returns [ArrayType ast]:
 		type '[' num1=INT_CONSTANT ']' 						{ $ast = new ArrayType($type.ast.getLine(), $type.ast.getColumn(), $type.ast, LexerHelper.lexemeToInt($num1.text));}
@@ -35,18 +41,15 @@ arrayType returns [ArrayType ast]:
 	;      
              
 functionDefinitions returns [List<FunctionDefinition> ast = new ArrayList<FunctionDefinition>()]:
-          	 functionDefinition   			{ $ast.add($functionDefinition.ast); } 
+          	 (functionDefinition   			{ $ast.add($functionDefinition.ast); })* 
             
        ; 
        
-functionDefinition returns [FunctionDefinition ast]:
-            	functionType statementBlock 	 			
-       ; 
+ 
        
 functionType returns [FunctionType ast]:
 			'void'  ID '(' (type ID	(',' type ID)*)* ')'  		
 		|  type  ID '(' (type ID	(',' type ID)*)* ')' 
-		| 'void' MAIN_FUNC '(' ')' 
 	;
 
        
@@ -72,8 +75,7 @@ statement returns [Statement ast]:
            | ifElseStatement																											{ $ast = $ifElseStatement.ast;}
            
            | RETURN_CONSTANT expression ';'																								{ $ast = new ReturnStatement($RETURN_CONSTANT.getLine(),
-                                                      																						$RETURN_CONSTANT.getCharPositionInLine()+1, $expression.ast);}																						
-         	                        																		
+                                                      																						$RETURN_CONSTANT.getCharPositionInLine()+1, $expression.ast);}																						         	                        																		
          ;
          
 ifElseStatement returns [IfElseStatement ast]:
