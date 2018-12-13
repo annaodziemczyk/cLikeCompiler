@@ -10,7 +10,7 @@ public class KeywordType extends AbstractType  {
 	
 	private static Map<String, Type> keywords;
 	private static KeywordType instance = new KeywordType();
-	public static KeywordType getInstance() {return instance;}
+	public static Type getInstance(String name) {return getKeywordType(name);}
 	
 	private KeywordType() {
 		super(0,0);
@@ -28,7 +28,7 @@ public class KeywordType extends AbstractType  {
 		}
 		return  new ErrorType(String.format(
 				"No typdef found for keyword %s", name),
-				getInstance());
+				instance);
 	}
 	
 	public static boolean isDefined(String name) {

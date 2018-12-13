@@ -13,6 +13,7 @@ public class Program extends AbstractASTNode {
 	private List<VarDefinition> varDefinitions;
 	private List<FunctionDefinition> functionDefinitions;
 	private List<TypeDefinition> typeDefs;
+	private List<Record> structDefs;
 
 	public Program(int line, int column, FunctionDefinition functionDef) {
 		super(line, column);
@@ -20,6 +21,7 @@ public class Program extends AbstractASTNode {
 		this.functionDefinitions = new ArrayList();
 		this.typeDefs=new ArrayList();
 		this.functionDefinitions.add(functionDef);
+		this.structDefs=new ArrayList();
 		
 	}
 	
@@ -28,6 +30,7 @@ public class Program extends AbstractASTNode {
 		this.varDefinitions = varDefinitions;
 		this.functionDefinitions = new ArrayList();
 		this.typeDefs=new ArrayList();
+		this.structDefs=new ArrayList();
 		
 	}
 	
@@ -36,7 +39,17 @@ public class Program extends AbstractASTNode {
 		this.varDefinitions = varDefinitions;
 		this.functionDefinitions = new ArrayList();
 		this.typeDefs=new ArrayList();
+		this.structDefs=new ArrayList();
 		this.addTypeDefinition(typeDef);		
+	}
+	
+	public Program(int line, int column, Record structDef) {
+		super(line, column);
+		this.varDefinitions = varDefinitions;
+		this.functionDefinitions = new ArrayList();
+		this.typeDefs=new ArrayList();
+		this.structDefs=new ArrayList();
+		this.addStructDefinition(structDef);
 	}
 	
 	
@@ -58,6 +71,10 @@ public class Program extends AbstractASTNode {
 	
 	public void addTypeDefinition(TypeDefinition typeDef) {		
 		this.typeDefs.add(typeDef);
+	}
+	
+	public void addStructDefinition(Record structDef) {		
+		this.structDefs.add(structDef);
 	}
 
 	@Override

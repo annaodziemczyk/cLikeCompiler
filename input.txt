@@ -5,6 +5,13 @@ int my_var1, my_var2, my_var3;
 typedef int integer_type;
 
 type integer_type f;
+
+typedef struct {
+	int day, month, year;
+} date_type;
+
+type date_type myDate;
+
 void p() {}
 
 int f(double r, int e) {

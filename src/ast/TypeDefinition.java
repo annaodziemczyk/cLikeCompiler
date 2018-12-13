@@ -8,8 +8,8 @@ import visitor.Visitor;
 public class TypeDefinition extends AbstractASTNode {
 
 	private Type type;
-	private String name;
-	
+	protected String name;
+
 	public TypeDefinition(int line, int column, Type type, String keyword) {
 		super(line, column);
 		this.name=keyword;
@@ -20,11 +20,20 @@ public class TypeDefinition extends AbstractASTNode {
 					this);
 		}else {
 			KeywordType.addKeyword(type, keyword);
-			this.type=KeywordType.getInstance();
+			this.type=KeywordType.getInstance(keyword);
 		}
 		
 		
 	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "TypeDefinition [type=" + type + ", name=" + name + "]";
+	}
+
+
 
 	@Override
 	public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
