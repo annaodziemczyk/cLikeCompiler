@@ -64,20 +64,18 @@ arrayType returns [ArrayType ast]:
 	;   
 	
 functionDefinition returns [FunctionDefinition ast]:
-            	'void'  funcName1=ID '(' 
-            	(argType1=type arg1=ID	{ }
-            	(',' argType2=type arg2=ID {}
-            	)*)* ')' statementBlock { $ast = new FunctionDefinition($funcName1.getLine(), $funcName1.getCharPositionInLine()+1, $funcName1.text, $statementBlock.ast);}
-            	
-            	| 	 returnType=type  funcName2=ID '(' 
-            	(argType3=type ID	
-            	(',' argType4=type ID 
-            	)*)* ')' statementBlock { $ast = new FunctionDefinition($funcName2.getLine(), $funcName2.getCharPositionInLine()+1, $funcName2.text, $statementBlock.ast);}	
+            	(voidType='void' 		{ $ast = new FunctionDefinition($voidType.getLine(), $voidType.getCharPositionInLine()+1);}
+            		|  returnType=type { $ast = new FunctionDefinition($returnType.ast.getLine(), $returnType.ast.getColumn(), $returnType.ast);}	
+            	)
+            	funcName=ID '(' { $ast.setName($funcName.text);}
+            	(argType1=type arg1=ID	{$ast.addArgument($argType1.ast, $arg1.text); }
+            	(',' argType2=type arg2=ID {$ast.addArgument($argType1.ast, $arg2.text); }
+            	)*)* ')' statementBlock { $ast.setFunctionBody($statementBlock.ast);}
        ;
        
 
 mainFunction returns [FunctionDefinition ast]:
-            'void' funcName='main' '(' ')' statementBlock 	{$ast = new FunctionDefinition($funcName.getLine(), $funcName.getCharPositionInLine()+1, $statementBlock.ast);}		
+            'void' funcName='main' '(' ')' statementBlock 	{$ast = new FunctionDefinition($funcName.getLine(), $funcName.getCharPositionInLine()+1, $funcName.text, $statementBlock.ast);}		
        ;
 
 	

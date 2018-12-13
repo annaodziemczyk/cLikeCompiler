@@ -14,6 +14,44 @@ public class FunctionDefinition extends AbstractASTNode {
 	 * The offset of the variable
 	 */
 	private int offset;
+	
+	private String name;
+	
+	private FunctionType type;
+
+	private List<Statement> functionBody;
+	
+	private List<VarDefinition> arguments;
+
+	public FunctionDefinition(int line, int column) {
+		super(line, column);
+		this.type = new FunctionType(line, column);
+		this.name = "";
+		this.functionBody = new ArrayList();
+		this.arguments=new ArrayList();
+	}
+	
+	public FunctionDefinition(int line, int column, String functionName, List<Statement> functionBody) {
+		super(line, column);
+		this.type = new FunctionType(line, column);
+		this.name = functionName;
+		this.functionBody = functionBody;
+		this.arguments=new ArrayList();
+	}
+	
+	public FunctionDefinition(int line, int column, Type returnType) {
+		super(line, column);
+		this.type = new FunctionType(line, column);
+		this.name = "";
+		this.functionBody = new ArrayList();
+		this.arguments=new ArrayList();
+	}
+	
+	public void addArgument(Type argumentType, String name) {
+		this.type.addParamType(argumentType);
+		this.arguments.add(new VarDefinition(this.getLine(), this.getColumn(), name, argumentType));
+	}
+	
 	public int getOffset() {
 		return this.offset;
 	}
@@ -21,56 +59,24 @@ public class FunctionDefinition extends AbstractASTNode {
 		this.offset = offset;
 	}
 
-	private String name;
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	public String getName() {
 		return this.name;
 	}
-	
-	private FunctionType type;
-	
+	public void setFunctionBody(List<Statement> functionBody) {
+		this.functionBody = functionBody;
+	}
+	public List<Statement> getFunctionBody() {
+		return functionBody;
+	}
+		
 	public Type getType() {
 		return this.type;
 	}
 	
-	public List<Statement> functionBody;
-
-	public FunctionDefinition(int line, int column, String name) {
-		super(line, column);
-		this.type = new FunctionType(line, column);
-		this.name = name;
-
-		this.functionBody = new ArrayList();
-	}
-	
-	public FunctionDefinition(int line, int column, List<Statement> functionBody) {
-		super(line, column);
-		this.type = new FunctionType(line, column);
-		this.name = "main";
-
-		this.functionBody = functionBody;
-	}
-	
-	public FunctionDefinition(int line, int column, String name, List<Statement> functionBody) {
-		super(line, column);
-		this.type = new FunctionType(line, column);
-		this.name = name;
-
-		this.functionBody = functionBody;
-	}
-	
-	public FunctionDefinition(int line, int column, String name, FunctionType type, List<Statement> functionBody) {
-		super(line, column);
-		this.type = type;
-		this.name = name;
-
-		this.functionBody = functionBody;
-	}
-	
-
-	public List<Statement> getFunctionBody() {
-		return functionBody;
-	}
 	@Override
 	public String toString() {
 		return String.format("%s %s; // offset: %d.", this.getType(), this.getName(), this.getOffset());

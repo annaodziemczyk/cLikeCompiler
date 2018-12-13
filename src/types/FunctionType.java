@@ -18,19 +18,15 @@ public class FunctionType extends AbstractType{
 		this.paramType=new ArrayList();
 	}
 	
-	public FunctionType(int line, int column, Type paramType) {
-		super(line, column);
-		this.returnType= VoidType.getInstance();
-		this.paramType=new ArrayList();
-		this.paramType.add(paramType);
-	}	
-	
-	public FunctionType(int line, int column, Type returnType, Type paramType) {
+	public FunctionType(int line, int column, Type returnType, List<Type> paramType) {
 		super(line, column);
 		this.returnType= returnType;
-		this.paramType=new ArrayList();
-		this.paramType.add(paramType);
+		this.paramType=paramType;
 	}	
+	
+	public void addParamType(Type type) {
+		this.paramType.add(type);
+	}
 
 	@Override
 	public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
