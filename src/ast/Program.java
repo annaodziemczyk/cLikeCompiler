@@ -26,31 +26,13 @@ public class Program extends AbstractASTNode {
 		
 	}
 	
-	public Program(int line, int column, VarDefinition varDefinition) {
+	public Program(int line, int column, List<VarDefinition> varDefinitions) {
 		super(line, column);
-		this.varDefinitions = new ArrayList();
+		this.varDefinitions = varDefinitions;
 		this.functionDefinitions = new ArrayList();
-		
-		if(varDefinition!=null) {
-			this.varDefinitions.add(varDefinition);
-		}
 		
 	}
 	
-	public Program(int line, int column, FunctionDefinition mainFunction, VarDefinition varDefinition) {
-		super(line, column);
-		this.varDefinitions = new ArrayList();
-		this.functionDefinitions = new ArrayList();
-		
-		if(mainFunction!=null) {
-			this.functionDefinitions.add(mainFunction);
-		}
-		
-		if(varDefinition!=null) {
-			this.varDefinitions.add(varDefinition);
-		}
-		
-	}
 	
 	public Program(int line, int column, FunctionDefinition mainFunction, FunctionDefinition functionDefinition) {
 		super(line, column);
@@ -98,8 +80,8 @@ public class Program extends AbstractASTNode {
 		this.functionDefinitions.add(functionDef);
 	}
 	
-	public void addVarDefinition(VarDefinition varDef) {		
-		this.varDefinitions.add(varDef);
+	public void addVarDefinitions(List<VarDefinition> varDef) {		
+		this.varDefinitions.addAll(varDef);
 	}
 
 	@Override

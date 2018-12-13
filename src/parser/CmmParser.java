@@ -155,9 +155,9 @@ public class CmmParser extends Parser {
 						((ProgramContext)_localctx).var1 = varDefinition();
 
 									if(_localctx.ast==null){
-										((ProgramContext)_localctx).ast =  new Program(((ProgramContext)_localctx).var1.ast.getLine(), ((ProgramContext)_localctx).var1.ast.getColumn(), ((ProgramContext)_localctx).var1.ast);
+										((ProgramContext)_localctx).ast =  new Program((((ProgramContext)_localctx).var1!=null?(((ProgramContext)_localctx).var1.start):null).getLine(), (((ProgramContext)_localctx).var1!=null?(((ProgramContext)_localctx).var1.start):null).getCharPositionInLine()+1, ((ProgramContext)_localctx).var1.ast);
 									}else{
-										_localctx.ast.addVarDefinition(((ProgramContext)_localctx).var1.ast);
+										_localctx.ast.addVarDefinitions(((ProgramContext)_localctx).var1.ast);
 									}
 									
 								
@@ -209,7 +209,7 @@ public class CmmParser extends Parser {
 					{
 					setState(37);
 					((ProgramContext)_localctx).var2 = varDefinition();
-					_localctx.ast.addVarDefinition(((ProgramContext)_localctx).var2.ast);
+					_localctx.ast.addVarDefinitions(((ProgramContext)_localctx).var2.ast);
 					}
 					break;
 				case 2:
@@ -241,7 +241,7 @@ public class CmmParser extends Parser {
 	}
 
 	public static class VarDefinitionContext extends ParserRuleContext {
-		public VarDefinition ast;
+		public List<VarDefinition> ast = new ArrayList();
 		public TypeContext type;
 		public Token id1;
 		public Token id2;
@@ -278,7 +278,7 @@ public class CmmParser extends Parser {
 				((VarDefinitionContext)_localctx).type = type();
 				setState(51);
 				((VarDefinitionContext)_localctx).id1 = match(ID);
-				 ((VarDefinitionContext)_localctx).ast = new VarDefinition(((VarDefinitionContext)_localctx).id1.getLine(), ((VarDefinitionContext)_localctx).id1.getCharPositionInLine()+1, (((VarDefinitionContext)_localctx).id1!=null?((VarDefinitionContext)_localctx).id1.getText():null), ((VarDefinitionContext)_localctx).type.ast);
+				 _localctx.ast.add(new VarDefinition(((VarDefinitionContext)_localctx).id1.getLine(), ((VarDefinitionContext)_localctx).id1.getCharPositionInLine()+1, (((VarDefinitionContext)_localctx).id1!=null?((VarDefinitionContext)_localctx).id1.getText():null), ((VarDefinitionContext)_localctx).type.ast));
 				setState(58);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -289,7 +289,7 @@ public class CmmParser extends Parser {
 					match(T__0);
 					setState(54);
 					((VarDefinitionContext)_localctx).id2 = match(ID);
-					 ((VarDefinitionContext)_localctx).ast = new VarDefinition(((VarDefinitionContext)_localctx).id2.getLine(), ((VarDefinitionContext)_localctx).id2.getCharPositionInLine()+1, (((VarDefinitionContext)_localctx).id2!=null?((VarDefinitionContext)_localctx).id2.getText():null), ((VarDefinitionContext)_localctx).type.ast);
+					 _localctx.ast.add(new VarDefinition(((VarDefinitionContext)_localctx).id2.getLine(), ((VarDefinitionContext)_localctx).id2.getCharPositionInLine()+1, (((VarDefinitionContext)_localctx).id2!=null?((VarDefinitionContext)_localctx).id2.getText():null), ((VarDefinitionContext)_localctx).type.ast));
 					}
 					}
 					setState(60);
@@ -309,7 +309,7 @@ public class CmmParser extends Parser {
 				((VarDefinitionContext)_localctx).id3 = match(ID);
 				setState(65);
 				match(T__1);
-				 ((VarDefinitionContext)_localctx).ast = new VarDefinition(((VarDefinitionContext)_localctx).id3.getLine(), ((VarDefinitionContext)_localctx).id3.getCharPositionInLine()+1, (((VarDefinitionContext)_localctx).id3!=null?((VarDefinitionContext)_localctx).id3.getText():null), ((VarDefinitionContext)_localctx).arrayType.ast);
+				 _localctx.ast.add(new VarDefinition(((VarDefinitionContext)_localctx).id3.getLine(), ((VarDefinitionContext)_localctx).id3.getCharPositionInLine()+1, (((VarDefinitionContext)_localctx).id3!=null?((VarDefinitionContext)_localctx).id3.getText():null), ((VarDefinitionContext)_localctx).arrayType.ast));
 				}
 				break;
 			}

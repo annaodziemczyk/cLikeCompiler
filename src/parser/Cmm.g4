@@ -17,9 +17,9 @@ import CommonLexerRules;
 program returns [Program ast]: 	
 		(var1=varDefinition {
 			if($ast==null){
-				$ast = new Program($var1.ast.getLine(), $var1.ast.getColumn(), $var1.ast);
+				$ast = new Program($var1.start.getLine(), $var1.start.getCharPositionInLine()+1, $var1.ast);
 			}else{
-				$ast.addVarDefinition($var1.ast);
+				$ast.addVarDefinitions($var1.ast);
 			}
 			
 		}
@@ -43,17 +43,17 @@ program returns [Program ast]:
 		
 		
 		}
- 		(var2=varDefinition 		{$ast.addVarDefinition($var2.ast);}
+ 		(var2=varDefinition 		{$ast.addVarDefinitions($var2.ast);}
  		| func2=functionDefinition {$ast.addFunctionDefinition($func2.ast);}
  		)* 	EOF
 	
     ;    
  
-varDefinition returns [VarDefinition ast]:
-	type id1=ID		 	{ $ast=new VarDefinition($id1.getLine(), $id1.getCharPositionInLine()+1, $id1.text, $type.ast);}
-	(',' id2=ID			{ $ast=new VarDefinition($id2.getLine(), $id2.getCharPositionInLine()+1, $id2.text, $type.ast);}
+varDefinition returns [List<VarDefinition> ast = new ArrayList()]:
+	type id1=ID		 	{ $ast.add(new VarDefinition($id1.getLine(), $id1.getCharPositionInLine()+1, $id1.text, $type.ast));}
+	(',' id2=ID	{ $ast.add(new VarDefinition($id2.getLine(), $id2.getCharPositionInLine()+1, $id2.text, $type.ast));}
 	)* ';'
-	|  arrayType id3=ID  ';' { $ast=new VarDefinition($id3.getLine(), $id3.getCharPositionInLine()+1, $id3.text, $arrayType.ast);}
+	|  arrayType id3=ID  ';' { $ast.add(new VarDefinition($id3.getLine(), $id3.getCharPositionInLine()+1, $id3.text, $arrayType.ast));}
 	; 
 	
 
