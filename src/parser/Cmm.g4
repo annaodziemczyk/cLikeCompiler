@@ -32,6 +32,15 @@ program returns [Program ast]:
 	
 		
 		}
+		
+		| typeDef1=typeDefinition {
+			if($ast==null){
+				$ast = new Program($typeDef1.ast.getLine(), $typeDef1.ast.getColumn(), $typeDef1.ast);
+			}else{
+				$ast.addTypeDefinition($typeDef1.ast);
+			}
+
+		}
 		)* 
 		mainFunction {
 		
@@ -45,10 +54,16 @@ program returns [Program ast]:
 		}
  		(var2=varDefinition 		{$ast.addVarDefinitions($var2.ast);}
  		| func2=functionDefinition {$ast.addFunctionDefinition($func2.ast);}
+ 		| typeDef1=typeDefinition {$ast.addTypeDefinition($typeDef1.ast);}
  		)* 	EOF
 	
     ;    
  
+typeDefinition returns [TypeDefinition ast]:
+		'typedef' type ID ';' {$ast = new TypeDefinition($ID.getLine(), $ID.getCharPositionInLine()+1, $type.ast, $ID.text);}
+	;
+	
+	
 varDefinition returns [List<VarDefinition> ast = new ArrayList()]:
 	type id1=ID		 	{ $ast.add(new VarDefinition($id1.getLine(), $id1.getCharPositionInLine()+1, $id1.text, $type.ast));}
 	(',' id2=ID	{ $ast.add(new VarDefinition($id2.getLine(), $id2.getCharPositionInLine()+1, $id2.text, $type.ast));}
@@ -107,6 +122,7 @@ type returns [Type ast]:
       'int' 						{ $ast = IntType.getInstance(); }				
     | 'double'						{ $ast = RealType.getInstance(); } 
     | 'char'						{ $ast = CharType.getInstance(); } 
+    | 'type' ID						{ $ast = KeywordType.getKeywordType($ID.text); }
     ;
    
 ifElseStatement returns [IfElseStatement ast]:

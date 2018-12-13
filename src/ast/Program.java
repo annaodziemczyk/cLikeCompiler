@@ -11,18 +11,15 @@ public class Program extends AbstractASTNode {
 	 * Global variables
 	 */
 	private List<VarDefinition> varDefinitions;
-
-
 	private List<FunctionDefinition> functionDefinitions;
+	private List<TypeDefinition> typeDefs;
 
-	public Program(int line, int column, FunctionDefinition mainFunction) {
+	public Program(int line, int column, FunctionDefinition functionDef) {
 		super(line, column);
 		this.varDefinitions = new ArrayList();
 		this.functionDefinitions = new ArrayList();
-		
-		if(mainFunction!=null) {
-			this.functionDefinitions.add(mainFunction);
-		}
+		this.typeDefs=new ArrayList();
+		this.functionDefinitions.add(functionDef);
 		
 	}
 	
@@ -30,43 +27,18 @@ public class Program extends AbstractASTNode {
 		super(line, column);
 		this.varDefinitions = varDefinitions;
 		this.functionDefinitions = new ArrayList();
+		this.typeDefs=new ArrayList();
 		
 	}
 	
-	
-	public Program(int line, int column, FunctionDefinition mainFunction, FunctionDefinition functionDefinition) {
+	public Program(int line, int column, TypeDefinition typeDef) {
 		super(line, column);
-		this.varDefinitions = new ArrayList();
+		this.varDefinitions = varDefinitions;
 		this.functionDefinitions = new ArrayList();
-		
-		if(mainFunction!=null) {
-			this.functionDefinitions.add(mainFunction);
-		}
-		
-		if(functionDefinition!=null) {
-			this.functionDefinitions.add(functionDefinition);
-		}
-		
+		this.typeDefs=new ArrayList();
+		this.addTypeDefinition(typeDef);		
 	}
 	
-	public Program(int line, int column, FunctionDefinition mainFunction, VarDefinition varDefinition, FunctionDefinition functionDefinition) {
-		super(line, column);
-		this.varDefinitions = new ArrayList();
-		this.functionDefinitions = new ArrayList();
-		
-		if(mainFunction!=null) {
-			this.functionDefinitions.add(mainFunction);
-		}
-		
-		if(functionDefinition!=null) {
-			this.functionDefinitions.add(functionDefinition);
-		}
-		
-		if(varDefinition!=null) {
-			this.varDefinitions.add(varDefinition);
-		}
-		
-	}
 	
 	public List<VarDefinition> getVarDefinitions() {
 		return this.varDefinitions;
@@ -82,6 +54,10 @@ public class Program extends AbstractASTNode {
 	
 	public void addVarDefinitions(List<VarDefinition> varDef) {		
 		this.varDefinitions.addAll(varDef);
+	}
+	
+	public void addTypeDefinition(TypeDefinition typeDef) {		
+		this.typeDefs.add(typeDef);
 	}
 
 	@Override
