@@ -11,34 +11,95 @@ public class Program extends AbstractASTNode {
 	 * Global variables
 	 */
 	private List<VarDefinition> varDefinitions;
-	public List<VarDefinition> getVarDefinitions() {
-		return this.varDefinitions;
-	}
+
 
 	private List<FunctionDefinition> functionDefinitions;
-	
-		
-	public List<FunctionDefinition> getFunctionDefinitions() {
-		return functionDefinitions;
-	}
 
-	public Program(int line, int column, List<VarDefinition> varDefinitions, List<FunctionDefinition> functionDefinitions) {
-		super(line, column);
-		this.varDefinitions = varDefinitions;
-		this.functionDefinitions = functionDefinitions;
-	}
-	
-	public Program(int line, int column, List<FunctionDefinition> functionDefinitions) {
-		super(line, column);
-		this.functionDefinitions = functionDefinitions;
-	}
-	
-	public Program(int line, int column, FunctionDefinition functionDefinition) {
+	public Program(int line, int column, FunctionDefinition mainFunction) {
 		super(line, column);
 		this.varDefinitions = new ArrayList();
 		this.functionDefinitions = new ArrayList();
 		
-		functionDefinitions.add(functionDefinition);
+		if(mainFunction!=null) {
+			this.functionDefinitions.add(mainFunction);
+		}
+		
+	}
+	
+	public Program(int line, int column, VarDefinition varDefinition) {
+		super(line, column);
+		this.varDefinitions = new ArrayList();
+		this.functionDefinitions = new ArrayList();
+		
+		if(varDefinition!=null) {
+			this.varDefinitions.add(varDefinition);
+		}
+		
+	}
+	
+	public Program(int line, int column, FunctionDefinition mainFunction, VarDefinition varDefinition) {
+		super(line, column);
+		this.varDefinitions = new ArrayList();
+		this.functionDefinitions = new ArrayList();
+		
+		if(mainFunction!=null) {
+			this.functionDefinitions.add(mainFunction);
+		}
+		
+		if(varDefinition!=null) {
+			this.varDefinitions.add(varDefinition);
+		}
+		
+	}
+	
+	public Program(int line, int column, FunctionDefinition mainFunction, FunctionDefinition functionDefinition) {
+		super(line, column);
+		this.varDefinitions = new ArrayList();
+		this.functionDefinitions = new ArrayList();
+		
+		if(mainFunction!=null) {
+			this.functionDefinitions.add(mainFunction);
+		}
+		
+		if(functionDefinition!=null) {
+			this.functionDefinitions.add(functionDefinition);
+		}
+		
+	}
+	
+	public Program(int line, int column, FunctionDefinition mainFunction, VarDefinition varDefinition, FunctionDefinition functionDefinition) {
+		super(line, column);
+		this.varDefinitions = new ArrayList();
+		this.functionDefinitions = new ArrayList();
+		
+		if(mainFunction!=null) {
+			this.functionDefinitions.add(mainFunction);
+		}
+		
+		if(functionDefinition!=null) {
+			this.functionDefinitions.add(functionDefinition);
+		}
+		
+		if(varDefinition!=null) {
+			this.varDefinitions.add(varDefinition);
+		}
+		
+	}
+	
+	public List<VarDefinition> getVarDefinitions() {
+		return this.varDefinitions;
+	}
+	
+	public List<FunctionDefinition> getFunctionDefinitions() {
+		return functionDefinitions;
+	}
+	
+	public void addFunctionDefinition(FunctionDefinition functionDef) {
+		this.functionDefinitions.add(functionDef);
+	}
+	
+	public void addVarDefinition(VarDefinition varDef) {		
+		this.varDefinitions.add(varDef);
 	}
 
 	@Override

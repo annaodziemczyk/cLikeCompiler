@@ -15,6 +15,8 @@ public class Write extends AbstractASTNode implements Statement {
 	 * Expression to be written
 	 */
 	private Expression expression;
+	
+	
 
 	public Expression getExpression() {
 		return expression;

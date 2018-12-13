@@ -9,10 +9,11 @@ import introspector.view.IntrospectorTree;
 public class Main {
 	
 	public static void main(String... args) throws Exception {
-		   if (args.length<1) {
-		        System.err.println("Please, pass me the input file.");
-		        return;
-		    }
+	   
+		if (args.length<2) {
+	        System.err.println("Please specify input and output file names.");
+	        return;
+	    }
 		   		 			
 		 // create a lexer that feeds off of input CharStream
 		CharStream input = CharStreams.fromFileName(args[0]);
@@ -20,14 +21,18 @@ public class Main {
 
 		// create a parser that feeds off the tokens buffer
 		CommonTokenStream tokens = new CommonTokenStream(lexer); 
-		CmmParser parser = new CmmParser(tokens);	
-		parser.program();	
+		CmmParser parser = new CmmParser(tokens);			
 		
 		Program ast = parser.program().ast;
 		
 		// * The AST is shown
-		IntrospectorModel model=new IntrospectorModel("Program", ast);
-		new IntrospectorTree("Introspector", model);	
+		if(ast!=null) {
+			IntrospectorModel model=new IntrospectorModel("Program", ast);
+			new IntrospectorTree("Introspector", model);	
+		}else {
+			  System.err.println("Abstract syntaxt tree could not be modeled.");
+		}
+		
 	}
 	
 

@@ -19,7 +19,7 @@ REAL_CONSTANT: INT* '.' [0-9]+ EXP?
 				| INT EXP
              ;
 
-CHAR_CONSTANT: '\''.'\'' | '\''CHAR_WS'\''			
+CHAR_CONSTANT: '\'' ('\\')*.'\'' 	
 			;
 
 fragment CHAR_ALPHA: ('a'..'z') | ('A'..'Z') ;

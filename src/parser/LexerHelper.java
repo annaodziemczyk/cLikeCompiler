@@ -24,19 +24,11 @@ public class LexerHelper {
 
 	public static char lexemeToChar(String str) {
 		char character='\0';
-		if(str!=null && (str.length()==1 || str.charAt(0)=='\\') ) {
+		if(str!=null) {
+			byte[] strBytes = str.getBytes();	
 			
-		character = str.charAt(0);
-			
-		 if(character=='\\')
-		 {
-			 str = str.substring(1);
-			 
-			 character =  (char)Integer.parseInt(str);
-			 System.out.println(character);
-			 
-		 }
-			
+			character = (char)strBytes[0];
+		
 		}else {
 			System.out.println("Cannot convert to char: " + str);
 		}

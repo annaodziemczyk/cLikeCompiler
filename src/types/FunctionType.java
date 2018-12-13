@@ -1,5 +1,6 @@
 package types;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import visitor.Visitor;
@@ -11,10 +12,24 @@ public class FunctionType extends AbstractType{
 	
 	private List<Type> paramType;
 	
-	public FunctionType(int line, int column, Type returnType, List<Type> paramType) {
+	public FunctionType(int line, int column) {
+		super(line, column);
+		this.returnType= VoidType.getInstance();
+		this.paramType=new ArrayList();
+	}
+	
+	public FunctionType(int line, int column, Type paramType) {
+		super(line, column);
+		this.returnType= VoidType.getInstance();
+		this.paramType=new ArrayList();
+		this.paramType.add(paramType);
+	}	
+	
+	public FunctionType(int line, int column, Type returnType, Type paramType) {
 		super(line, column);
 		this.returnType= returnType;
-		this.paramType=paramType;
+		this.paramType=new ArrayList();
+		this.paramType.add(paramType);
 	}	
 
 	@Override

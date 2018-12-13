@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import types.FunctionType;
@@ -34,6 +35,30 @@ public class FunctionDefinition extends AbstractASTNode {
 	
 	public List<Statement> functionBody;
 
+	public FunctionDefinition(int line, int column, String name) {
+		super(line, column);
+		this.type = new FunctionType(line, column);
+		this.name = name;
+
+		this.functionBody = new ArrayList();
+	}
+	
+	public FunctionDefinition(int line, int column, List<Statement> functionBody) {
+		super(line, column);
+		this.type = new FunctionType(line, column);
+		this.name = "main";
+
+		this.functionBody = functionBody;
+	}
+	
+	public FunctionDefinition(int line, int column, String name, List<Statement> functionBody) {
+		super(line, column);
+		this.type = new FunctionType(line, column);
+		this.name = name;
+
+		this.functionBody = functionBody;
+	}
+	
 	public FunctionDefinition(int line, int column, String name, FunctionType type, List<Statement> functionBody) {
 		super(line, column);
 		this.type = type;

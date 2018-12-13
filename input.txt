@@ -5,7 +5,7 @@ int my_var;
 void p() {}
 
 int f(double r, int e) {
-  /*double real;
+  double real;
   char c;
   int result;
   real = r * 10.0;
@@ -16,13 +16,13 @@ int f(double r, int e) {
   }
   else 
     result = (int)real;
-  return result;*/
+  return result;
 }
 
 int my_var;
 
 void initialize() {
- /* int i;
+  int i;
   fibonacci[0][0] = 0;
   fibonacci[0][1] = 1;
   fibonacci[0][2] = 1;
@@ -33,12 +33,12 @@ void initialize() {
     fibonacci[i][1] = fibonacci[i - 1][2];
     fibonacci[i][2] = fibonacci[i][0] + fibonacci[i][1];
     i = i + 1;
-  }*/
+  }
 }
 
 int my_var;
 void main(){
-  /*int i;
+  int i;
   int j;
   char ch;
   p();
@@ -65,8 +65,6 @@ void main(){
     write fibonacci[i][2];
     write '\n';
     i = i + 1;
-  }*/
+  }
+ }
 
-
-}
-	int my_var;
