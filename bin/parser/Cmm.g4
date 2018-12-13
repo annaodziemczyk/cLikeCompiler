@@ -86,10 +86,12 @@ statementBlock returns [List<Statement> ast = new ArrayList()]:
 
 statement returns [Statement ast]:
 			e1=expression '=' e2=expression ';'		{ $ast = new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast); }
-          	| 'write' expression ';'		    	{ $ast = new Write($expression.start.getLine(),
-                                                   		$expression.start.getCharPositionInLine()+1, $expression.ast); }
-            | 'read' expression ';'		    		{ $ast = new Read($expression.start.getLine(),
-                                                   	$expression.start.getCharPositionInLine()+1, $expression.ast); }
+          	| 'write' e1=expression 		    	{ $ast = new Write($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast); }
+               (',' e2=expression				{((Write)$ast).addExpression($e2.ast);}
+            	)* ';'
+            | 'read' e1=expression 		    		{ $ast = new Read($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast); }
+              (',' e2=expression					{((Read)$ast).addExpression($e2.ast);}
+        		)* ';'
         	| 'while' '(' expression ')' statementBlock		{ $ast = new WhileStatement($expression.start.getLine(),
                                                    				$expression.start.getCharPositionInLine()+1, $expression.ast, $statementBlock.ast);}
            | ifElseStatement		{ $ast = $ifElseStatement.ast;}

@@ -9,27 +9,11 @@ package ast;
 
 import visitor.Visitor;
 
-public class Write extends AbstractASTNode implements Statement {
-
-	/**
-	 * Expression to be written
-	 */
-	private Expression expression;
-	
-	
-
-	public Expression getExpression() {
-		return expression;
-	}
-	
-	@Override
-	public String toString() {
-		return "write " + expression;
-	}
+public class Write extends Console  {
 
 	public Write(int line, int column, Expression expression) {
-		super(line, column);
-		this.expression = expression;
+		super(line, column, expression);
+
 	}
 
 	@Override

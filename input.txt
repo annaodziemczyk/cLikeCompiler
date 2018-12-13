@@ -5,6 +5,9 @@ int my_var1, my_var2, my_var3;
 void p() {}
 
 int f(double r, int e) {
+
+	write a+b, v[45+c];
+	read realNumber, w[6][t];
   double real;
   char c;
   int result;
