@@ -8,6 +8,7 @@
 package ast;
 
 import types.Type;
+import visitor.Visitor;
 
 
 public interface Expression extends ASTNode {
@@ -17,4 +18,7 @@ public interface Expression extends ASTNode {
 	 */
 	public Type getType();
 	public void setType(Type tipo);
+	
+	@Override
+	public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param);
 }
