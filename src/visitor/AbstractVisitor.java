@@ -38,8 +38,6 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
 	@Override
 	public TR visit(Assignment assignment, TP param) {
-//		assignment.getLeftHandSide().accept(this, param);
-//		assignment.getRightHandSide().accept(this, param);
 		return null;
 	}
 
@@ -180,6 +178,24 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 	@Override
 	public TR visit(ReturnStatement returnStatement, TP param) {
 //		returnStatement.getExpression().accept(this, param);
+		return null;
+	}
+
+	@Override
+	public Void visit(TypeDefinition e, Void param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Void visit(Record e, Void param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Void visit(ArrayIndexing e, Void param) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

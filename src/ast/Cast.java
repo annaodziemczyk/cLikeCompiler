@@ -14,7 +14,13 @@ public class Cast extends AbstractExpression{
 		this.expression = expression;
 	}
 	
-	
+	public Type getCastType() {
+		return castType;
+	}
+
+	public Expression getExpression() {
+		return expression;
+	}
 
 	@Override
 	public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {

@@ -4,13 +4,20 @@ import visitor.Visitor;
 
 public class Negation  extends AbstractExpression {
 	
-	private Expression exp;
+	private Expression expression;
 
 	public Negation(int line, int column, Expression exp) {
 		super(line, column);
-		this.exp = exp;
+		this.expression = exp;
 		// TODO Auto-generated constructor stub
 	}
+	
+
+	public Expression getExpression() {
+		return expression;
+	}
+
+
 
 	@Override
 	public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
