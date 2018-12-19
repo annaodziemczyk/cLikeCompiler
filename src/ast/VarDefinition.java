@@ -10,7 +10,7 @@ import types.ArrayType;
 import types.Type;
 import visitor.Visitor;
 
-public class VarDefinition extends AbstractASTNode {
+public class VarDefinition extends Definition {
 	
 	/**
 	 * The offset of the variable
@@ -22,13 +22,6 @@ public class VarDefinition extends AbstractASTNode {
 	public void setOffset(int offset) {
 		this.offset = offset;
 	}
-
-	private String name;
-	
-	public String getName() {
-		return this.name;
-	}
-
 	
 	private Type type;
 	
@@ -37,9 +30,8 @@ public class VarDefinition extends AbstractASTNode {
 	}
 
 	public VarDefinition(int line, int column, String name, Type type) {
-		super(line, column);
+		super(line, column, name);
 		this.type = type;
-		this.name = name;
 	}
 
 	@Override

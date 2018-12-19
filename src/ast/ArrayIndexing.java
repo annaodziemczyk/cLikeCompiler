@@ -20,11 +20,6 @@ public class ArrayIndexing extends Variable{
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public Expression getIndex1() {
 		return index1;
@@ -32,6 +27,11 @@ public class ArrayIndexing extends Variable{
 
 	public Expression getIndex2() {
 		return index2;
+	}
+	
+	@Override
+	public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+		return visitor.visit(this,param);
 	}
 
 	@Override

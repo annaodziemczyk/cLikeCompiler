@@ -28,7 +28,7 @@ public class Record extends TypeDefinition {
 	@Override
 	public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
 		// TODO Auto-generated method stub
-		return null;
+		return visitor.visit(this, null);
 	}
 	
 

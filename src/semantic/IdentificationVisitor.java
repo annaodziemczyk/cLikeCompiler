@@ -11,32 +11,34 @@ import java.util.*;
 import types.*;
 import visitor.*;
 import ast.*;
+import symboltable.SymbolTable;
 
 public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 	
 	// * A Symbol Table to store the variables defined (VarDefinitions)
-	private Map<String,VarDefinition> st = new HashMap<String,VarDefinition>();
+	private SymbolTable st = new SymbolTable();
 
 	@Override
 	public Void visit(Variable variable, Void param) {
 		// * Identification of the node where the variable was defined
-		variable.setDefinition(st.get(variable.getName()));
+		variable.setDefinition((VarDefinition)st.find(variable.getName()));
 		// * If there is no definition, an error type is created 
 		if (variable.getDefinition() == null)
 			variable.setDefinition(new VarDefinition(variable.getLine(), variable.getColumn(), variable.getName(),
-					new ErrorType("Identifier "+variable.getName()+" not defined",variable)));
+					new ErrorType("Variable '"+variable.getName()+"' not defined",variable)));
 		return null;
 	}
 
 	@Override
 	public Void visit(VarDefinition varDefinition, Void param) {
+		
 		// * A variable with the same name cannot be declared before
-		if (st.get(varDefinition.getName()) != null) 
-			new ErrorType("The identifier " + varDefinition.getName()
-					+ " has already been defined in this scope", varDefinition);
+		if (this.isAlreadyDefined(varDefinition.getName(),st.getScope())) 
+			new ErrorType("The identifier '" + varDefinition.getName()
+					+ "' has already been defined in this scope", varDefinition);
 		else
 			// * We add the variable definition to the symbol table
-			st.put(varDefinition.getName(), varDefinition);
+			st.insert(varDefinition);
 		return null;
 	}
 	
@@ -72,13 +74,55 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 	}
 	
 	@Override
-	public Void visit(FunctionCall e, Void param) {
+	public Void visit(FunctionCall functionCall, Void param) {
+
+		Definition definition=st.find(functionCall.getName());
+		
+		if (definition == null)
+				new ErrorType("Function '"+functionCall.getName()+"' not defined",functionCall);
 		return null;
 	}
 	
 	@Override
-	public Void visit(FunctionDefinition e, Void param) {
+	public Void visit(FunctionDefinition functionDefinition, Void param) {
+		
+		if (this.isAlreadyDefined(functionDefinition.getName())) {
+			new ErrorType("Function '" + functionDefinition.getName()
+			+ "' has already been defined", functionDefinition);
+		}else {
+			st.insert(functionDefinition);
+		}
+		
+		st.set();
+		
+		for(VarDefinition var:functionDefinition.getVariables()) {		
+			var.accept(this, null);
+		}
+			
+	
+		for(Statement statement:functionDefinition.getFunctionBody()) {
+			statement.accept(this, null);			
+		}
+		
+		st.reset();
+
+		
 		return null;
+	}
+	
+	private boolean isAlreadyDefined(String name, int scope) {
+		Definition definition=st.find(name);
+	
+		return definition!=null && definition.getScope()==scope;
+	}
+	
+	private boolean isAlreadyDefined(String name) {
+		Definition definition=st.find(name);
+//		boolean argsMatch=false;
+//		if(definition instanceof FunctionDefinition) {
+//			argsMatch= ((FunctionType)((FunctionDefinition)definition).getType()).getParamType().containsAll(functionType.getParamType());
+//		}
+		return definition!=null;
 	}
 	
 	@Override
@@ -97,12 +141,24 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 	}
 	
 	@Override
-	public Void visit(Read e, Void param) {
+	public Void visit(Read read, Void param) {
+		for(Expression expression:read.getExpressions())
+			expression.accept(this, null);
+		
 		return null;
 	}
 	
 	@Override
-	public Void visit(Program e, Void param) {
+	public Void visit(Program program, Void param) {
+		for(VarDefinition varDefinition: program.getVarDefinitions())
+			varDefinition.accept(this, null);
+		for(TypeDefinition typeDefinition: program.getTypeDefs())
+			typeDefinition.accept(this, null);
+		for(Record record: program.getStructDefs())
+			record.accept(this, null);		
+		for(FunctionDefinition functionDefinition: program.getFunctionDefinitions()) {
+			functionDefinition.accept(this, null);
+		}			
 		return null;
 	}
 	

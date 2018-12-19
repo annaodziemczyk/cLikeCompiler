@@ -6,7 +6,7 @@ import java.util.List;
 
 import visitor.Visitor;
 
-public class FunctionCall extends AbstractExpression {
+public class FunctionCall extends AbstractExpression implements Statement, Expression{
 	
 	private String name;
 	private List<Expression> expressions;

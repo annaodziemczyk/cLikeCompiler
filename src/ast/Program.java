@@ -77,6 +77,14 @@ public class Program extends AbstractASTNode {
 		this.structDefs.add(structDef);
 	}
 
+	public List<TypeDefinition> getTypeDefs() {
+		return typeDefs;
+	}
+
+	public List<Record> getStructDefs() {
+		return structDefs;
+	}
+
 	@Override
 	public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
 		return visitor.visit(this,param);

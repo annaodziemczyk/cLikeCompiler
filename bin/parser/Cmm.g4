@@ -97,10 +97,10 @@ arrayType returns [ArrayType ast]:
 	;   
 	
 functionDefinition returns [FunctionDefinition ast]:
-            	(voidType='void' 		{ $ast = new FunctionDefinition($voidType.getLine(), $voidType.getCharPositionInLine()+1);}
-            		|  returnType=type { $ast = new FunctionDefinition($returnType.ast.getLine(), $returnType.ast.getColumn(), $returnType.ast);}	
+            	((voidType='void' funcName1=ID)		{ $ast = new FunctionDefinition($funcName1.getLine(), $funcName1.getCharPositionInLine()+1, $funcName1.text);}
+            		|  (returnType=type funcName2=ID) { $ast = new FunctionDefinition($funcName2.getLine(), $funcName2.getCharPositionInLine()+1 ,$funcName2.text, $returnType.ast);}	
             	)
-            	funcName=ID '(' { $ast.setName($funcName.text);}
+            	'('
             	(argType1=type arg1=ID	{$ast.addArgument($argType1.ast, $arg1.text); }
             	(',' argType2=type arg2=ID {$ast.addArgument($argType1.ast, $arg2.text); }
             	)*)* ')' '{' 
@@ -143,7 +143,9 @@ statement returns [Statement ast]:
            | RETURN_CONSTANT expression ';'	{ $ast = new ReturnStatement($RETURN_CONSTANT.getLine(),
                                              $RETURN_CONSTANT.getCharPositionInLine()+1, $expression.ast);}																						         	                        																		
          
-         	| expression ';'	
+         	| 	ID '(' 		{ $ast = new FunctionCall($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text);}	
+ 			(arguments { $ast = new FunctionCall($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text, $arguments.ast);}	
+ 			)* ')'';'	
          ;
 
   
@@ -200,6 +202,6 @@ expression returns [Expression ast]:
  	
 
  arguments returns [List<Expression> ast = new ArrayList();]:
- 	e1=expression {$ast.add($e1.ast);}
+ 	e1=expression {$ast.add($e1.ast);} 
  	(',' e2=expression {$ast.add($e2.ast);} )* 
  ;	

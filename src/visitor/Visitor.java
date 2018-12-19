@@ -35,6 +35,13 @@ public interface Visitor<TP, TR> {
 	 public TR visit(Cast cast, TP param);
 	 
 	 public TR visit(FunctionCall functionCall, TP param);
+	 
+	 public TR visit(TypeDefinition typeDefiniton, Void param);
+
+	 public TR visit(Record e, Void param);
+
+	 public TR visit(ArrayIndexing e, Void param);
+	
 	
 	// ************ Statements ***************
 	
@@ -71,10 +78,5 @@ public interface Visitor<TP, TR> {
 
 	 public TR visit(RealType realType, TP param);
 
-	 public Void visit(TypeDefinition e, Void param);
 
-	 public Void visit(Record e, Void param);
-
-	 public Void visit(ArrayIndexing e, Void param);
-	
 }

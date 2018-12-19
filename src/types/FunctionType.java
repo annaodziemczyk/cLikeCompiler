@@ -27,6 +27,16 @@ public class FunctionType extends AbstractType{
 	public void addParamType(Type type) {
 		this.paramType.add(type);
 	}
+	
+	
+
+	public Type getReturnType() {
+		return returnType;
+	}
+
+	public List<Type> getParamType() {
+		return paramType;
+	}
 
 	@Override
 	public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {

@@ -8,7 +8,7 @@ import types.Type;
 import types.VoidType;
 import visitor.Visitor;
 
-public class FunctionDefinition extends AbstractASTNode {
+public class FunctionDefinition extends Definition {
 	
 	/**
 	 * The offset of the variable
@@ -23,26 +23,18 @@ public class FunctionDefinition extends AbstractASTNode {
 	
 	private List<VarDefinition> variables;
 
-	public FunctionDefinition(int line, int column) {
-		super(line, column);
-		this.type = new FunctionType(line, column);
-		this.name = "";
-		this.functionBody = new ArrayList();
-		this.variables=new ArrayList();
-	}
-	
 	public FunctionDefinition(int line, int column, String functionName) {
-		super(line, column);
+		super(line, column, functionName);
 		this.type = new FunctionType(line, column);
 		this.name = functionName;
 		this.functionBody = new ArrayList();
 		this.variables=new ArrayList();
 	}
 	
-	public FunctionDefinition(int line, int column, Type returnType) {
-		super(line, column);
+	public FunctionDefinition(int line, int column, String functionName, Type returnType) {
+		super(line, column, functionName);
 		this.type = new FunctionType(line, column);
-		this.name = "";
+		this.name = functionName;
 		this.functionBody = new ArrayList();
 		this.variables=new ArrayList();
 	}
@@ -89,12 +81,12 @@ public class FunctionDefinition extends AbstractASTNode {
 	}
 	
 	public void addStatement(Statement statement) {
-		this.functionBody.add(statement);
+		if(statement!=null) {
+			this.functionBody.add(statement);
+		}
 		
 	}
-	
-	
-	
+
 	public List<VarDefinition> getVariables() {
 		return variables;
 	}
@@ -106,7 +98,7 @@ public class FunctionDefinition extends AbstractASTNode {
 
 	@Override
 	public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
-		return visitor.visit(this,param);
+		return visitor.visit(this,null);
 	}
 
 

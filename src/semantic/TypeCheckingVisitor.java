@@ -19,8 +19,6 @@ import types.*;
 
 public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 
-	Map<String, VarDefinition> varDefinitions = new HashMap(); 
-	
 	@Override
 	public Void visit(Arithmetic exp, Void param) {
 		
@@ -36,14 +34,6 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 	@Override
 	public Void visit(ArrayIndexing arrayIndexing, Void param) {
 		
-		if(arrayIndexing.getDefinition()==null) {
-			this.varDefinitions.get(arrayIndexing.getName());
-		}
-		
-		if(arrayIndexing.getDefinition()!=null) {
-			arrayIndexing.setType(arrayIndexing.getDefinition().getType());
-		}
-		
 		arrayIndexing.getIndex1().accept(this, null);
 		
 		if(arrayIndexing.getIndex2()!=null)
@@ -55,9 +45,6 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 
 	@Override
 	public Void visit(Variable variable, Void param) {
-		if(variable.getDefinition()==null) {
-			this.varDefinitions.get(variable.getName());
-		}
 		
 		if(variable.getDefinition()!=null) {
 			variable.setType(variable.getDefinition().getType());
@@ -195,13 +182,11 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 	
 	@Override
 	public Void visit(TypeDefinition typeDefinition, Void param) {
-		
 		return null;
 	}
 	
 	@Override
 	public Void visit(VarDefinition varDefinition, Void param) {
-		this.varDefinitions.put(varDefinition.getName(),varDefinition);
 		return null;
 	}
 	
@@ -219,6 +204,18 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 		for(Expression expression : writeStatement.getExpressions()) {
 			expression.accept(this, param);
 		}
+		return null;
+	}
+	
+	public Void visit(Program program, Void param) {
+		for(VarDefinition varDefinition: program.getVarDefinitions())
+			varDefinition.accept(this, null);
+		for(TypeDefinition typeDefinition: program.getTypeDefs())
+			typeDefinition.accept(this, null);
+		for(Record record: program.getStructDefs())
+			record.accept(this, null);		
+		for(FunctionDefinition functionDefinition: program.getFunctionDefinitions())
+			functionDefinition.accept(this, null);
 		return null;
 	}
 

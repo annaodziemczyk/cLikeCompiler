@@ -14,10 +14,6 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
 	@Override
 	public TR visit(Program program, TP param) {
-		for(VarDefinition varDefinition: program.getVarDefinitions())
-			varDefinition.accept(this, param);
-		for(FunctionDefinition functionDefinition: program.getFunctionDefinitions())
-			functionDefinition.accept(this, param);
 		return null;
 	}
 
@@ -182,19 +178,19 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 	}
 
 	@Override
-	public Void visit(TypeDefinition e, Void param) {
+	public TR visit(TypeDefinition e, Void param) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Void visit(Record e, Void param) {
+	public TR visit(Record e, Void param) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Void visit(ArrayIndexing e, Void param) {
+	public TR visit(ArrayIndexing e, Void param) {
 		// TODO Auto-generated method stub
 		return null;
 	}
