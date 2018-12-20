@@ -1,0 +1,17 @@
+
+#source	"C:\Users\odziea\eclipse-workspace\lab06\lab10-input.txt"
+
+	' * Variable definitions
+	' * int gi (offset 0)
+	' * double gd (offset 2)
+	' * char gc (offset 6)
+
+	' * Functions
+
+#line	7
+
+#line	20
+
+	' * TypeDefinition
+
+	' * Structs
