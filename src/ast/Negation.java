@@ -2,7 +2,7 @@ package ast;
 
 import visitor.Visitor;
 
-public class Negation  extends AbstractExpression {
+public class Negation  extends AbstractExpression{
 	
 	private Expression expression;
 

@@ -1,5 +1,6 @@
 package types;
 
+import ast.ASTNode;
 import visitor.Visitor;
 
 public class RecordType extends AbstractType  {

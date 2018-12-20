@@ -18,6 +18,12 @@ public class FunctionType extends AbstractType{
 		this.paramType=new ArrayList();
 	}
 	
+	public FunctionType(int line, int column, Type returnType) {
+		super(line, column);
+		this.returnType= returnType;
+		this.paramType=new ArrayList();
+	}	
+	
 	public FunctionType(int line, int column, Type returnType, List<Type> paramType) {
 		super(line, column);
 		this.returnType= returnType;
@@ -26,9 +32,7 @@ public class FunctionType extends AbstractType{
 	
 	public void addParamType(Type type) {
 		this.paramType.add(type);
-	}
-	
-	
+	}	
 
 	public Type getReturnType() {
 		return returnType;

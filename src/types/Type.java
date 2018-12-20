@@ -10,6 +10,7 @@ package types;
 
 
 import ast.ASTNode;
+import ast.ArrayIndexing;
 
 public interface Type extends ASTNode {
 	
@@ -19,12 +20,19 @@ public interface Type extends ASTNode {
 	public Type arithmetic(Type type, ASTNode astNode);
 	
 	public Type assignment(Type type, ASTNode astNode);
+	
+	public Type logical(Type type, ASTNode astNode);
+	
+	public Type comparision(Type type, ASTNode astNode);
+	
+	public Type squareBrackets(Type type, ASTNode astNode);
 
 	/******** Code Generation ***************/
 	
 	public  char suffix();
 	
 	public  int numberOfBytes();
+
 	
 	
 }

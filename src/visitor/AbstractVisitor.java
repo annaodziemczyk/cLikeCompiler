@@ -9,11 +9,23 @@ package visitor;
 
 import types.*;
 import ast.*;
+import symboltable.SymbolTable;
 
 public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
+	// * A Symbol Table to store the variables defined (VarDefinitions)
+	protected SymbolTable st = new SymbolTable();
+	
 	@Override
 	public TR visit(Program program, TP param) {
+		for(VarDefinition varDefinition: program.getVarDefinitions())
+			varDefinition.accept(this, null);
+		for(TypeDefinition typeDefinition: program.getTypeDefs())
+			typeDefinition.accept(this, null);
+		for(Record record: program.getStructDefs())
+			record.accept(this, null);		
+		for(FunctionDefinition functionDefinition: program.getFunctionDefinitions())
+			functionDefinition.accept(this, null);
 		return null;
 	}
 
@@ -43,10 +55,9 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 //		write.getExpression().accept(this, param);
 		return null;
 	}
-
+	
 	@Override
 	public TR visit(VarDefinition varDefinition, TP param) {
-//		varDefinition.getType().accept(this, param);
 		return null;
 	}
 
@@ -194,5 +205,6 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

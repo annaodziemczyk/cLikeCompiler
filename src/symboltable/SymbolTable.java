@@ -16,6 +16,7 @@ public class SymbolTable {
 
 	public void set() {
 		scope+=1;
+		this.table.add(new HashMap());
 	}
 	
 	public void reset() {
@@ -26,10 +27,8 @@ public class SymbolTable {
 
 	public boolean insert(Definition definition) {
 		
-		if(this.table.size()<(this.scope+1))
-			this.table.add(new HashMap());
 		definition.setScope(scope);
-		Map<String,Definition>scopeDefs=this.table.get(this.scope);
+		Map<String,Definition>scopeDefs=this.table.get(scope==0?0:table.size()-1);
 		if(scopeDefs.containsKey(definition.getName())==true){
 			return false;
 		}
@@ -45,7 +44,7 @@ public class SymbolTable {
 		Definition definition = null;
 		
 		if(this.table.size()>=(scope+1)) {
-			definition=this.table.get(scope).get(id);
+			definition=this.table.get(table.size()-1).get(id);
 		}
 		
 		if(definition==null)

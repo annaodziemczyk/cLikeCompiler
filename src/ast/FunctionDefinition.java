@@ -33,7 +33,7 @@ public class FunctionDefinition extends Definition {
 	
 	public FunctionDefinition(int line, int column, String functionName, Type returnType) {
 		super(line, column, functionName);
-		this.type = new FunctionType(line, column);
+		this.type = new FunctionType(line, column, returnType);
 		this.name = functionName;
 		this.functionBody = new ArrayList();
 		this.variables=new ArrayList();

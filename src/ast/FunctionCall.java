@@ -4,10 +4,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import types.FunctionType;
+import types.Type;
 import visitor.Visitor;
 
 public class FunctionCall extends AbstractExpression implements Statement, Expression{
 	
+	public FunctionDefinition getFunctionDefinition() {
+		return functionDefinition;
+	}
+
+
+
+	private FunctionDefinition functionDefinition;
 	private String name;
 	private List<Expression> expressions;
 	
@@ -27,10 +36,21 @@ public class FunctionCall extends AbstractExpression implements Statement, Expre
 		return name;
 	}
 
-
+	public void setFunctionDefinition(FunctionDefinition functionDefinition) {
+		this.functionDefinition = functionDefinition;
+	}
 
 	public List<Expression> getExpressions() {
 		return expressions;
+	}
+	
+	@Override
+	public Type getType() {
+		if(this.functionDefinition!=null) {
+			return ((FunctionType)this.functionDefinition.getType()).getReturnType();
+		}
+		
+		return null;
 	}
 
 

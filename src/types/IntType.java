@@ -20,6 +20,21 @@ public class IntType extends AbstractType {
 	
 	public static IntType getInstance() { return instance; }
 
+	@Override
+	public Type assignment(Type type, ASTNode node) {
+		if (type instanceof types.ErrorType)
+			return type;
+		if (type instanceof IntType)
+			return this;
+		if (type instanceof RealType)
+			return new ErrorType(String.format(
+					"No implict conversion %s to %s", type, this),
+					node);
+		
+		return new ErrorType(String.format(
+				"%s cannot be assigned to %s", type, this),
+				node);
+	}
 	
 	@Override
 	public Type arithmetic(Type type, ASTNode node) {

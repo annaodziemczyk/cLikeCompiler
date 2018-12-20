@@ -15,13 +15,15 @@ import symboltable.SymbolTable;
 
 public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 	
-	// * A Symbol Table to store the variables defined (VarDefinitions)
-	private SymbolTable st = new SymbolTable();
-
 	@Override
 	public Void visit(Variable variable, Void param) {
+		
+		Definition definition = st.find(variable.getName());
 		// * Identification of the node where the variable was defined
-		variable.setDefinition((VarDefinition)st.find(variable.getName()));
+		if(definition instanceof VarDefinition) {
+			variable.setDefinition((VarDefinition)definition);
+		}
+		
 		// * If there is no definition, an error type is created 
 		if (variable.getDefinition() == null)
 			variable.setDefinition(new VarDefinition(variable.getLine(), variable.getColumn(), variable.getName(),

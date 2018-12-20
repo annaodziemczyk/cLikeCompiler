@@ -1,5 +1,7 @@
 package ast;
 
+import types.ArrayType;
+import types.Type;
 import visitor.Visitor;
 
 public class ArrayIndexing extends Variable{

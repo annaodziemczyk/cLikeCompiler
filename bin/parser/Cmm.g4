@@ -64,7 +64,7 @@ program returns [Program ast]:
  		| func2=functionDefinition {$ast.addFunctionDefinition($func2.ast);}
  		| typeDef2=typeDefinition {$ast.addTypeDefinition($typeDef2.ast);}
  		| structDef2=structDefinition {$ast.addStructDefinition($structDef2.ast);}
- 		)* 	EOF
+ 		)* 	
 	
     ;    
  
@@ -136,8 +136,8 @@ statement returns [Statement ast]:
             | 'read' e1=expression 		    		{ $ast = new Read($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast); }
               (',' e2=expression					{((Read)$ast).addExpression($e2.ast);}
         		)* ';'
-        	| 'while' '(' expression ')' statementBlock		{ $ast = new WhileStatement($expression.start.getLine(),
-                                                   				$expression.start.getCharPositionInLine()+1, $expression.ast, $statementBlock.ast);}
+        	| 'while' '(' expression ')' statementBlockOrStatement		{ $ast = new WhileStatement($expression.start.getLine(),
+                                                   				$expression.start.getCharPositionInLine()+1, $expression.ast, $statementBlockOrStatement.ast);}
            | ifElseStatement		{ $ast = $ifElseStatement.ast;}
            
            | RETURN_CONSTANT expression ';'	{ $ast = new ReturnStatement($RETURN_CONSTANT.getLine(),
@@ -170,9 +170,8 @@ ifElseStatement returns [IfElseStatement ast]:
 			;
 			
 statementBlockOrStatement returns [List<Statement> ast = new ArrayList()]:
-
-		statementBlock { $ast = $statementBlock.ast;}
-		| statement		{ $ast.add($statement.ast);}
+		statement		{ $ast.add($statement.ast);}
+		| statementBlock { $ast = $statementBlock.ast;}
 	;
          
 			

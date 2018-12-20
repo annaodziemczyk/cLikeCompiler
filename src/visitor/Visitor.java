@@ -41,7 +41,7 @@ public interface Visitor<TP, TR> {
 	 public TR visit(Record e, Void param);
 
 	 public TR visit(ArrayIndexing e, Void param);
-	
+	 
 	
 	// ************ Statements ***************
 	

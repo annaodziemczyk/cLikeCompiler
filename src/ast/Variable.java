@@ -16,7 +16,7 @@ public class Variable extends AbstractExpression {
 		return name;
 	}
 
-	private VarDefinition definition;
+	protected VarDefinition definition;
 	public VarDefinition getDefinition() {
 		return definition;
 	}
@@ -35,6 +35,14 @@ public class Variable extends AbstractExpression {
 		this.name=name;
 		
 		this.definition = new VarDefinition(line, column, name, type);
+	}
+	
+	public Type getType() {
+		if(this.definition!=null) {
+			return definition.getType();
+		}
+		
+		return null;
 	}
 
 	@Override

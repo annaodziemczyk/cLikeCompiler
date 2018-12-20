@@ -5,6 +5,7 @@ import semantic.TypeCheckingVisitor;
 import org.antlr.v4.runtime.*;
 
 import ast.Program;
+import codegen.OffsetVisitor;
 import errorhandler.ErrorHandler;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
@@ -29,13 +30,16 @@ public class Main {
 		Program ast = parser.program().ast;
 		ast.accept(new IdentificationVisitor(),null);
 		ast.accept(new TypeCheckingVisitor(),null);
-		
+	
 		
 		if (ErrorHandler.getErrorHandler().anyError()) {
 			ErrorHandler.getErrorHandler().showErrors(System.err);
 			System.err.println("Program with semantic errors. No code was generated.");
+		}else {
+			ast.accept(new OffsetVisitor(), null);
+//			ast.accept(new ExecuteCGVisitor(new CG(args[1], args[0])), null);
 		}	
-		
+		ast.accept(new OffsetVisitor(), null);
 		// * The AST is shown
 		IntrospectorModel model=new IntrospectorModel("Program", ast);
 		new IntrospectorTree("Introspector", model);	
