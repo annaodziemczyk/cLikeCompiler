@@ -1,18 +1,18 @@
 package types;
 
+import java.util.List;
+
 import ast.ASTNode;
 import visitor.Visitor;
 
 public class RecordType extends AbstractType  {
 	
-	private RecordType()  {
+	private List<Type> fieldTypes;
+	
+	public RecordType(List<Type> fieldTypes)  {
 		super(0, 0);
+		this.fieldTypes=fieldTypes;
 	}
-	
-	private static RecordType instance=new RecordType();
-	
-	
-	public static RecordType getInstance() { return instance; }
 	
 	
 	@Override
@@ -29,8 +29,12 @@ public class RecordType extends AbstractType  {
 
 	@Override
 	public int numberOfBytes() {
+		int numBytes=0;
+		for(Type fieldType:this.fieldTypes) {
+			numBytes+=fieldType.numberOfBytes();
+		}
 		// TODO Auto-generated method stub
-		return 0;
+		return numBytes;
 	}
 
 }

@@ -76,7 +76,7 @@ public class ArrayType extends AbstractType{
 	@Override
 	public int numberOfBytes() {
 		// TODO Auto-generated method stub
-		return 0;
+		return size*numElems*elemType.numberOfBytes();
 	}
 	
 

@@ -24,7 +24,8 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 		
 		exp.getOperand1().accept(this,null);
 		exp.getOperand2().accept(this,null);
-		exp.setType(exp.getOperand1().getType().arithmetic(exp.getOperand2().getType(), exp));
+		if(exp.getOperand1().getType()!=null&&exp.getOperand2().getType()!=null)
+			exp.setType(exp.getOperand1().getType().arithmetic(exp.getOperand2().getType(), exp));
 		return null;
 	}
 	
@@ -125,8 +126,8 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 		}else if(assignment.getLeftHandSide().getType()!=assignment.getRightHandSide().getType()) {
 			new ErrorType("lvalue required", assignment);
 		}else {
-			assignment.getLeftHandSide().accept(this,null);
-			assignment.getRightHandSide().accept(this,null);
+			assignment.getLeftHandSide().accept(this,param);
+			assignment.getRightHandSide().accept(this,param);
 
 			assignment.getLeftHandSide().getType().assignment(assignment.getRightHandSide().getType(), assignment);
 		}
@@ -194,11 +195,14 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 		if(st.find(functionDefinition.getName())==null)
 			st.insert(functionDefinition);
 		
-		for(VarDefinition varDefinition:functionDefinition.getVariables())
-			varDefinition.accept(this, null);
+		for(VarDefinition varDefinition:functionDefinition.getVariables()) {
+			varDefinition.accept(this, param);
+
+		}
+		
 		
 		for(Statement statement : functionDefinition.getFunctionBody()) {
-			statement.accept(this, null);
+			statement.accept(this, param);
 			if(statement instanceof ReturnStatement) {
 				Type funcReturnType=((FunctionType)functionDefinition.getType()).getReturnType();
 				Type returnType=((ReturnStatement) statement).getExpression().getType();

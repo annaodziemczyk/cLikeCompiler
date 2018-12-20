@@ -7,9 +7,17 @@ import visitor.Visitor;
 
 public class TypeDefinition extends AbstractASTNode {
 
-	private Type type;
+	protected Type type;
 	protected String name;
 
+	private int offset;
+
+	
+	public TypeDefinition(int line, int column) {
+		super(line, column);
+		
+	}
+	
 	public TypeDefinition(int line, int column, Type type, String keyword) {
 		super(line, column);
 		this.name=keyword;
@@ -26,7 +34,20 @@ public class TypeDefinition extends AbstractASTNode {
 		
 	}
 	
-	
+	public int getOffset() {
+		return this.offset;
+	}
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public String getName() {
+		return name;
+	}
 
 	@Override
 	public String toString() {

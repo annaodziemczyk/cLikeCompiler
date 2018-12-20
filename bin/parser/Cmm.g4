@@ -102,7 +102,7 @@ functionDefinition returns [FunctionDefinition ast]:
             	)
             	'('
             	(argType1=type arg1=ID	{$ast.addArgument($argType1.ast, $arg1.text); }
-            	(',' argType2=type arg2=ID {$ast.addArgument($argType1.ast, $arg2.text); }
+            	(',' argType2=type arg2=ID {$ast.addArgument($argType2.ast, $arg2.text); }
             	)*)* ')' '{' 
             		(varDefinition   { $ast.addVarDefinition($varDefinition.ast);}
             		| statement		{ $ast.addStatement($statement.ast);}

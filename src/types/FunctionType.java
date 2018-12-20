@@ -6,7 +6,6 @@ import java.util.List;
 import visitor.Visitor;
 
 public class FunctionType extends AbstractType{
-	
 
 	private Type returnType;
 	

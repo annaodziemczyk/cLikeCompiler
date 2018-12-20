@@ -81,9 +81,9 @@ public class FunctionDefinition extends Definition {
 	}
 	
 	public void addStatement(Statement statement) {
-		if(statement!=null) {
-			this.functionBody.add(statement);
-		}
+		
+		this.functionBody.add(statement);
+		
 		
 	}
 

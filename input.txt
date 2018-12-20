@@ -4,7 +4,7 @@ int my_var1, my_var2, my_var3;
 
 typedef int integer_type;
 
-type integer_type f;
+type integer_type k;
 
 typedef struct {
 	int day, month, year;
@@ -16,8 +16,8 @@ void p() {}
 
 int f(double r, int e) {
 
-	write a+b, v[45+c];
-	read realNumber, w[6][t];
+	//write a+b, v[45+c];
+	//read realNumber, w[6][t];
   double real;
   char c;
   int result;
@@ -49,7 +49,6 @@ void initialize() {
   }
 }
 
-int my_var;
 void main(){
   int i;
   int j;

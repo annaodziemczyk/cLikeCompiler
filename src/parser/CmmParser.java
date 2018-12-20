@@ -638,7 +638,7 @@ public class CmmParser extends Parser {
 					((FunctionDefinitionContext)_localctx).argType2 = type();
 					setState(128);
 					((FunctionDefinitionContext)_localctx).arg2 = match(ID);
-					_localctx.ast.addArgument(((FunctionDefinitionContext)_localctx).argType1.ast, (((FunctionDefinitionContext)_localctx).arg2!=null?((FunctionDefinitionContext)_localctx).arg2.getText():null)); 
+					_localctx.ast.addArgument(((FunctionDefinitionContext)_localctx).argType2.ast, (((FunctionDefinitionContext)_localctx).arg2!=null?((FunctionDefinitionContext)_localctx).arg2.getText():null)); 
 					}
 					}
 					setState(135);
