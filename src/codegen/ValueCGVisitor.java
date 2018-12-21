@@ -66,7 +66,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 
 	@Override
 	public Void visit(CharLiteral charLiteral, Void param) {
-		// TODO Auto-generated method stub
+		cg.push(charLiteral.value);
 		return null;
 	}
 
@@ -78,24 +78,6 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 
 	@Override
 	public Void visit(FunctionCall functionCall, Void param) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Void visit(TypeDefinition typeDefiniton, Void param) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Void visit(Record e, Void param) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Void visit(ArrayIndexing e, Void param) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -126,18 +108,6 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 
 	@Override
 	public Void visit(ReturnStatement returnStatement, Void param) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Void visit(CharType charType, Void param) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Void visit(VoidType voidType, Void param) {
 		// TODO Auto-generated method stub
 		return null;
 	}

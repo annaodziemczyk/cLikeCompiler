@@ -39,6 +39,16 @@ public class CG {
 		out.flush();
 	}
 	
+	public void addi() {
+		out.println("\taddi");
+		out.flush();
+	}
+	
+	public void pushbp() {
+		out.println("\tpush bp\t");
+		out.flush();
+	}
+	
 	public void load(Type type) {
 		out.println("\tload"+type.suffix());
 		out.flush();
@@ -80,6 +90,11 @@ public class CG {
 		out.flush();
 	}
 	
+	public void push(char constant) {
+		out.println("\tpushb\t"+constant+"");
+		out.flush();
+	}
+	
 	public void push(double constant) {
 		out.println("\tpushf\t"+constant+"");
 		out.flush();
@@ -99,7 +114,7 @@ public class CG {
 	 * Variable definition generates one comment for readability purposes
 	 */
 	public void declaration(VarDefinition varDefinition) {
-		comment(varDefinition.getType().toString()+" "+varDefinition.getName()+" (offset "+varDefinition.getOffset()+")");
+		//comment(varDefinition.getType().toString()+" "+varDefinition.getName()+" (offset "+varDefinition.getOffset()+")");
 		out.flush();
 	}
 	
@@ -109,7 +124,14 @@ public class CG {
 	 */
 	public void pushAddress(Variable variable) {
 		VarDefinition varDefinition = variable.getDefinition();
-		pusha(varDefinition.getOffset());
+
+		if(varDefinition.getScope()==0) {
+			pusha(varDefinition.getOffset());
+		}else {
+			pushbp();
+			push(varDefinition.getOffset());
+			addi();
+		}
 	}
 
 	// * To generate debug information

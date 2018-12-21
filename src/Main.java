@@ -41,7 +41,7 @@ public class Main {
 			ast.accept(new OffsetVisitor(), null);
 			ast.accept(new ExecuteCGVisitor(new CG(args[1], args[0])), null);
 		}	
-		ast.accept(new OffsetVisitor(), null);
+
 		// * The AST is shown
 		IntrospectorModel model=new IntrospectorModel("Program", ast);
 		new IntrospectorTree("Introspector", model);	

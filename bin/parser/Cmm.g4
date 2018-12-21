@@ -153,7 +153,7 @@ type returns [Type ast]:
       'int' 						{ $ast = IntType.getInstance(); }				
     | 'double'						{ $ast = RealType.getInstance(); } 
     | 'char'						{ $ast = CharType.getInstance(); } 
-    | 'type' ID						{ $ast = KeywordType.getKeywordType($ID.text); }
+    | 'type' ID						{ $ast = new KeywordType($ID.text); }
     ;
    
 ifElseStatement returns [IfElseStatement ast]:

@@ -41,7 +41,7 @@ public class VarDefinition extends Definition {
 
 	@Override
 	public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
-		return visitor.visit(this,param);
+		return visitor.visit(this, param);
 	}
 
 

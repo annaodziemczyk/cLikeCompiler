@@ -1143,7 +1143,7 @@ public class CmmParser extends Parser {
 				match(T__17);
 				setState(258);
 				((TypeContext)_localctx).ID = match(ID);
-				 ((TypeContext)_localctx).ast =  KeywordType.getKeywordType((((TypeContext)_localctx).ID!=null?((TypeContext)_localctx).ID.getText():null)); 
+				 ((TypeContext)_localctx).ast =  new KeywordType((((TypeContext)_localctx).ID!=null?((TypeContext)_localctx).ID.getText():null)); 
 				}
 				break;
 			default:

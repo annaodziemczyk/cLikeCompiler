@@ -36,11 +36,11 @@ public interface Visitor<TP, TR> {
 	 
 	 public TR visit(FunctionCall functionCall, TP param);
 	 
-	 public TR visit(TypeDefinition typeDefiniton, Void param);
+	 public TR visit(TypeDefinition typeDefiniton, TP param);
 
-	 public TR visit(Record e, Void param);
+	 public TR visit(Record e, TP param);
 
-	 public TR visit(ArrayIndexing e, Void param);
+	 public TR visit(ArrayIndexing e, TP param);
 	 
 	
 	// ************ Statements ***************
@@ -68,6 +68,8 @@ public interface Visitor<TP, TR> {
 
 	// ************ Types ****************
 
+	 public TR visit(KeywordType keywordType, TP param);
+	 
 	 public TR visit(IntType intType, TP param);
 	 
 	 public TR visit(CharType charType, TP param);
@@ -77,6 +79,7 @@ public interface Visitor<TP, TR> {
 	 public TR visit(ErrorType errorType, TP param);
 
 	 public TR visit(RealType realType, TP param);
+
 
 
 }

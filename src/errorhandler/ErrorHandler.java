@@ -40,6 +40,7 @@ public class ErrorHandler {
 	}
 	
 	public void showErrors(PrintStream out) {
+		Collections.sort(errors, (a, b) -> a.getLine()<b.getLine()?-1:0);
 		for (int i=0;i<errors.size();i++)
 			out.println(errors.get(i));
 	}

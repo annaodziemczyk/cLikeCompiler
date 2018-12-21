@@ -16,17 +16,18 @@ private int bytesLocalSum = 0;
 		if(varDefinition.getScope()==0) {
 			varDefinition.setOffset(bytesGlobalsSum);
 			bytesGlobalsSum += varDefinition.getType().numberOfBytes();
-		}else {
-			varDefinition.setOffset(bytesLocalSum);
-			bytesLocalSum += varDefinition.getType().numberOfBytes();
-		}
+		}else {	
+			varDefinition.setOffset(-bytesLocalSum);
+			bytesLocalSum += varDefinition.getType().numberOfBytes();	
+			varDefinition.getType().accept(this, param);
+		}		
 		
 		return null;
 	}
 	
 	@Override
 	public Void visit(FunctionDefinition functionDefinition, Void param) {
-		functionDefinition.setOffset(bytesGlobalsSum);
+		bytesLocalSum=4;
 		for(VarDefinition varDef:functionDefinition.getVariables()) {
 			varDef.accept(this, param);
 		}
@@ -34,17 +35,19 @@ private int bytesLocalSum = 0;
 		for(Statement statement:functionDefinition.getFunctionBody()) {
 			statement.accept(this, param);
 		}
-		
-		bytesLocalSum=0;
-		
+
 		return null;
 	}
 	
 	@Override
 	public Void visit(Record record, Void param) {
-		record.setOffset(bytesGlobalsSum);
-		record.getType().accept(this, param);
-		bytesGlobalsSum += record.getType().numberOfBytes();
+		bytesLocalSum=0;
+		for(TypeDefinition typeDef:record.getFields().values()) {
+			record.setOffset(bytesLocalSum);
+			bytesGlobalsSum += record.getType().numberOfBytes();
+			record.getType().accept(this, param);
+		}
+		
 		return null;
 	}
 }

@@ -1,9 +1,3 @@
-/**
-  * First pass of semantic analysis.
-  * Links every variable usage with its definition.
-  * 
-  * @author  Francisco Ortin
-  */
 package semantic;
 
 import java.util.*;
@@ -15,14 +9,34 @@ import symboltable.SymbolTable;
 
 public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 	
+	// * A Symbol Table to store the variables defined (VarDefinitions)
+	protected SymbolTable st = new SymbolTable();
+	
 	@Override
 	public Void visit(Variable variable, Void param) {
 		
 		Definition definition = st.find(variable.getName());
-		// * Identification of the node where the variable was defined
-		if(definition instanceof VarDefinition) {
+
+		// * If there is no definition, an error type is created 
+		if (definition ==null)
+				new ErrorType("Variable '"+variable.getName()+"' not defined",variable);
+		else if(definition instanceof VarDefinition)
 			variable.setDefinition((VarDefinition)definition);
-		}
+		else
+			// * Identification of the node where the variable was defined
+			new ErrorType("Variable '"+variable.getName()+"' not defined",variable);
+
+			
+		return null;
+	}
+	
+	@Override
+	public Void visit(ArrayIndexing variable, Void param) {
+		
+		Definition definition = st.find(variable.getName());
+
+		// * Identification of the node where the variable was defined
+		variable.setDefinition((VarDefinition)definition);
 		
 		// * If there is no definition, an error type is created 
 		if (variable.getDefinition() == null)
@@ -44,34 +58,27 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 		return null;
 	}
 	
-	@Override
-	public Void visit(Arithmetic exp, Void param) {
-		return null;
-	}
 	
 	@Override
-	public Void visit(IntLiteral intLiteral, Void param) {
-		return null;		
-	}
-	
-	@Override
-	public Void visit(RealLiteral realLiteral, Void param) {
-		return null;
+	public Void visit(Arithmetic arithmetic, Void param) {
 		
-	}
-	
-	@Override
-	public Void visit(Cast e, Void param) {
+		arithmetic.getOperand1().accept(this, null);
+		arithmetic.getOperand2().accept(this, null);
+		
 		return null;
 	}
 	
-	@Override
-	public Void visit(CharLiteral e, Void param) {
-		return null;
-	}
 	
 	@Override
-	public Void visit(Comparision e, Void param) {
+	public Void visit(Cast cast, Void param) {
+		cast.getExpression().accept(this, null);
+		return null;
+	}
+
+	@Override
+	public Void visit(Comparision comparision, Void param) {
+		comparision.getOperand1().accept(this, null);
+		comparision.getOperand2().accept(this, null);
 		return null;
 	}
 	
@@ -82,6 +89,12 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 		
 		if (definition == null)
 				new ErrorType("Function '"+functionCall.getName()+"' not defined",functionCall);
+		else
+			functionCall.setFunctionDefinition((FunctionDefinition)definition);
+		
+		for(Expression exp:functionCall.getExpressions()) {
+			exp.accept(this, null);
+		}
 		return null;
 	}
 	
@@ -120,25 +133,36 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 	
 	private boolean isAlreadyDefined(String name) {
 		Definition definition=st.find(name);
-//		boolean argsMatch=false;
-//		if(definition instanceof FunctionDefinition) {
-//			argsMatch= ((FunctionType)((FunctionDefinition)definition).getType()).getParamType().containsAll(functionType.getParamType());
-//		}
+
 		return definition!=null;
 	}
 	
 	@Override
-	public Void visit(IfElseStatement e, Void param) {
+	public Void visit(IfElseStatement ifElse, Void param) {
+		
+		ifElse.getCondition().accept(this, null);
+		
+		for(Statement st:ifElse.getIfBody()) {
+			st.accept(this, null);
+		}
+		
+		for(Statement st:ifElse.getElseBody()) {
+			st.accept(this, null);
+		}
+		
 		return null;
 	}
 	
 	@Override
-	public Void visit(Logical e, Void param) {
+	public Void visit(Logical logical, Void param) {
+		logical.getOperand1().accept(this, null);
+		logical.getOperand2().accept(this, null);
 		return null;
 	}
 	
 	@Override
-	public Void visit(Negation e, Void param) {
+	public Void visit(Negation neg, Void param) {
+		neg.getExpression().accept(this, null);
 		return null;
 	}
 	
@@ -151,42 +175,67 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 	}
 	
 	@Override
-	public Void visit(Program program, Void param) {
-		for(VarDefinition varDefinition: program.getVarDefinitions())
-			varDefinition.accept(this, null);
-		for(TypeDefinition typeDefinition: program.getTypeDefs())
-			typeDefinition.accept(this, null);
-		for(Record record: program.getStructDefs())
-			record.accept(this, null);		
-		for(FunctionDefinition functionDefinition: program.getFunctionDefinitions()) {
-			functionDefinition.accept(this, null);
-		}			
+	public Void visit(Assignment assignment, Void param) {
+		assignment.getLeftHandSide().accept(this, null);
+		assignment.getRightHandSide().accept(this, null);
+		return null;
+	}
+
+	
+	@Override
+	public Void visit(Record record, Void param) {
+		for(TypeDefinition typeDef:record.getFields().values()) {
+			typeDef.accept(this, null);
+		}
 		return null;
 	}
 	
 	@Override
-	public Void visit(Record e, Void param) {
+	public Void visit(ReturnStatement returnStatement, Void param) {
+		returnStatement.getExpression().accept(this, null);
 		return null;
 	}
 	
 	@Override
-	public Void visit(ReturnStatement e, Void param) {
+	public Void visit(WhileStatement whileStatement, Void param) {
+		whileStatement.getExpression().accept(this, null);
+		for(Statement statement:whileStatement.getStatements()) {
+			statement.accept(this, null);
+		}
 		return null;
 	}
 	
 	@Override
-	public Void visit(TypeDefinition e, Void param) {
+	public Void visit(Write write, Void param) {
+		for(Expression exp:write.getExpressions()) {
+			exp.accept(this, null);
+		}
+		return null;
+	}
+
+	
+	@Override
+	public Void visit(TypeDefinition typeDefition, Void param) {
+		typeDefition.getType().accept(this, null);
 		return null;
 	}
 	
+
 	@Override
-	public Void visit(WhileStatement e, Void param) {
+	public Void visit(KeywordType keyword, Void param) {
+		
+		Type keywordType=st.findKeyword(keyword.getKeyword());
+		if(keywordType==null) {
+			st.addKeyword(keyword);
+		}else {
+			new ErrorType(String.format(
+					"Type has already been defined for keyword %s", keyword),
+					keyword);
+		}
 		return null;
 	}
-	
-	@Override
-	public Void visit(Write e, Void param) {
-		return null;
-	}
+
+
+
 
 }

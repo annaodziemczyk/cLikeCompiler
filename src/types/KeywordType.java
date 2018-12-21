@@ -9,37 +9,37 @@ import visitor.Visitor;
 
 public class KeywordType extends AbstractType  {
 	
-	private static Map<String, Type> keywords;
-	private static KeywordType instance = new KeywordType();
-	public static Type getInstance(String name) {return getKeywordType(name);}
+	private String keyword;
+	private Type type;
 	
-	private KeywordType() {
+	
+	public KeywordType(String keyword) {
 		super(0,0);
-		keywords = new HashMap();
-	}
-
-	public static void addKeyword(Type type, String name) {
-		keywords.putIfAbsent(name, type);
-	}
-
-	public static Type getKeywordType(String name) {
-		if(keywords.containsKey(name))
-		{
-			return keywords.get(name);
-		}
-		return  new ErrorType(String.format(
-				"No typdef found for keyword %s", name),
-				instance);
+		this.keyword=keyword;
 	}
 	
-	public static boolean isDefined(String name) {
-		return keywords.containsKey(name);
+	public KeywordType(String keyword, Type type) {
+		super(0,0);
+		this.keyword=keyword;
+		this.type=type;
+	}	
+
+	public String getKeyword() {
+		return keyword;
 	}
+
+
+
+	public Type getType() {
+		return type;
+	}
+
+
 
 	@Override
 	public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
 		// TODO Auto-generated method stub
-		return null;
+		return visitor.visit(this,param);
 	}
 
 	@Override
@@ -51,15 +51,8 @@ public class KeywordType extends AbstractType  {
 	@Override
 	public int numberOfBytes() {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.type.numberOfBytes();
 	}
 
-
-
-
-
-	
-	
-	
 
 }

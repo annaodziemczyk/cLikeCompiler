@@ -94,7 +94,108 @@ public abstract class AbstractCGVisitor<TP, TR> implements Visitor<TP, TR> {
 		throw new IllegalStateException("Code generation template \"Arithmetic\" not defined for the code function " +
 				this.getClass().getName()); 
 	}
+	
+	@Override
+	public TR visit(ReturnStatement returnStatement, TP param) {
+		throw new IllegalStateException("Code generation template \"ReturnStatement\" not defined for the code function " +
+				this.getClass().getName()); 
+	}	
+	 
+	@Override
+	 public TR visit(Comparision comparision, TP param){
+		throw new IllegalStateException("Code generation template \"Comparision\" not defined for the code function " +
+				this.getClass().getName()); 
+	}
+	
+	@Override
+	 public TR visit(Logical logical, TP param){
+		throw new IllegalStateException("Code generation template \"Logical\" not defined for the code function " +
+				this.getClass().getName()); 
+	}
+	 
+	@Override
+	 public TR visit(Negation Negation, TP param){
+		throw new IllegalStateException("Code generation template \"Negation\" not defined for the code function " +
+				this.getClass().getName()); 
+	}
 
+	@Override
+	 public TR visit(CharLiteral charLiteral, TP param){
+		throw new IllegalStateException("Code generation template \"CharLiteral\" not defined for the code function " +
+				this.getClass().getName()); 
+	}	
 
+	@Override
+	 public TR visit(Cast cast, TP param){
+		throw new IllegalStateException("Code generation template \"Cast\" not defined for the code function " +
+				this.getClass().getName()); 
+	}
+	 
+	@Override
+	 public TR visit(FunctionCall functionCall, TP param){
+		throw new IllegalStateException("Code generation template \"FunctionCall\" not defined for the code function " +
+				this.getClass().getName()); 
+	}
+	 
+	@Override
+	 public TR visit(TypeDefinition typeDefiniton, TP param){
+		throw new IllegalStateException("Code generation template \"TypeDefinition\" not defined for the code function " +
+				this.getClass().getName()); 
+	}
+
+	@Override
+	 public TR visit(Record e, TP param){
+		throw new IllegalStateException("Code generation template \"Record\" not defined for the code function " +
+				this.getClass().getName()); 
+	}
+
+	@Override
+	 public TR visit(ArrayIndexing e, TP param){
+		throw new IllegalStateException("Code generation template \"ArrayIndexing\" not defined for the code function " +
+				this.getClass().getName()); 
+	}
+	 
+	@Override
+	 public TR visit(Read read, TP param){
+		throw new IllegalStateException("Code generation template \"Read\" not defined for the code function " +
+				this.getClass().getName()); 
+	}
+
+	@Override
+	public  TR visit(FunctionDefinition functionDefinition, TP param){
+		throw new IllegalStateException("Code generation template \"FunctionDefinition\" not defined for the code function " +
+				this.getClass().getName()); 
+	}
+	
+	@Override
+	public  TR visit(WhileStatement whileStatement, TP param){
+		throw new IllegalStateException("Code generation template \"WhileStatement\" not defined for the code function " +
+				this.getClass().getName()); 
+	}
+	
+	@Override
+	public  TR visit(IfElseStatement IfElseStatement, TP param){
+		throw new IllegalStateException("Code generation template \"IfElseStatement\" not defined for the code function " +
+				this.getClass().getName()); 
+	}	
+
+	@Override
+	 public TR visit(CharType charType, TP param){
+		throw new IllegalStateException("Code generation template \"CharType\" not defined for the code function " +
+				this.getClass().getName()); 
+	}
+	
+	@Override
+	 public TR visit(VoidType voidType, TP param){
+		throw new IllegalStateException("Code generation template \"VoidType\" not defined for the code function " +
+				this.getClass().getName()); 
+	}
+	
+	@Override
+	public TR visit(KeywordType keywordType, TP param) {
+		throw new IllegalStateException("Code generation template \"KeywordType\" not defined for the code function " +
+				this.getClass().getName()); 
+	}
+	
 
 }

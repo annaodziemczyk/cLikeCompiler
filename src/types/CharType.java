@@ -51,7 +51,7 @@ public class CharType extends AbstractType{
 	@Override
 	public char suffix() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 'b';
 	}
 
 

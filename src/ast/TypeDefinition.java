@@ -21,17 +21,8 @@ public class TypeDefinition extends AbstractASTNode {
 	public TypeDefinition(int line, int column, Type type, String keyword) {
 		super(line, column);
 		this.name=keyword;
-		
-		if(KeywordType.isDefined(keyword)) {
-			type = new ErrorType(String.format(
-					"Type has already been defined for keyword %s",  keyword),
-					this);
-		}else {
-			KeywordType.addKeyword(type, keyword);
-			this.type=KeywordType.getInstance(keyword);
-		}
-		
-		
+		this.type=new KeywordType(keyword,type);
+
 	}
 	
 	public int getOffset() {

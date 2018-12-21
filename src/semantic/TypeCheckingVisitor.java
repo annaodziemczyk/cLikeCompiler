@@ -28,76 +28,36 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 			exp.setType(exp.getOperand1().getType().arithmetic(exp.getOperand2().getType(), exp));
 		return null;
 	}
-	
-//	@Override
-//	public Void visit(ArrayIndexing arrayIndexing, Void param) {
-//		
-//		Definition definition = st.find(arrayIndexing.getName());
-//		 
-//		 if(definition!=null) {
-//			 arrayIndexing.setDefinition((VarDefinition)definition);
-//			 if(!(((VarDefinition)definition).getType() instanceof ArrayType)) {
-//				new ErrorType("Variable '" + arrayIndexing.getName() + "' not an array", arrayIndexing);
-//			 }else {
-//				 arrayIndexing.getIndex1().accept(this, null);
-//				if(arrayIndexing.getIndex2()!=null) {
-//					arrayIndexing.getIndex2().accept(this, null);
-//				}else {
-//					arrayIndexing.getType().squareBrackets(type, astNode)
-//				}
-//			 }
-//	
-//			 
-//		 }else {
-//			new ErrorType("Variable '" + arrayIndexing.getName() + "' not declared", arrayIndexing);
-//		}
-//		 
-//	
-//
-//		
-//		return null;
-//	}
+
 
 	@Override
 	public Void visit(Variable variable, Void param) {
-		
-		Definition definition = this.st.find(variable.getName());
-		
-		if(definition!=null && definition instanceof VarDefinition) {
-			
-			variable.setDefinition((VarDefinition)definition);
-			variable.setType(((VarDefinition)definition).getType());
+
+		if(variable.getDefinition()!=null)
+		variable.setType(variable.getDefinition().getType());
+
+		return null;
+	}
 	
-			if(variable instanceof ArrayIndexing) {
-				if(!(((VarDefinition)definition).getType() instanceof ArrayType)) {
-					new ErrorType("Variable '" + variable.getName() + "' is not an array", variable);
-				}
-				ArrayIndexing arrayIndexing =(ArrayIndexing)variable;
-				arrayIndexing.getIndex1().accept(this, param);
-				variable.setType(((VarDefinition)definition).getType().squareBrackets(arrayIndexing.getIndex1().getType(), variable));
+	@Override
+	public Void visit(ArrayIndexing arrayIndexing, Void param) {
 
-				if(arrayIndexing.getIndex2()!=null) {
-					arrayIndexing.getIndex2().accept(this, param);	
-					
-					if(!(arrayIndexing.getIndex1() instanceof ArrayType)) {
-						new ErrorType(String.format("%s [%s] is not an array", variable.getName(), ((ArrayIndexing) variable).getIndex1()), variable);
-					}
-
-				}
-				
-				
-				
-			}
-			
-			
-		}else {
-			new ErrorType("Variable '" + variable.getName() + "' not declared", variable);
+		if(!(((VarDefinition)arrayIndexing.getDefinition()).getType() instanceof ArrayType)) {
+			new ErrorType("Variable '" + arrayIndexing.getName() + "' is not an array", arrayIndexing);
 		}
-		
-//		if(variable instanceof ArrayIndexing) {
-//			this.visit((ArrayIndexing)variable, param);
-//		}
-//		
+
+		arrayIndexing.getIndex1().accept(this, param);
+		arrayIndexing.setType(((VarDefinition)arrayIndexing.getDefinition()).getType().squareBrackets(arrayIndexing.getIndex1().getType(), arrayIndexing));
+
+
+		if(arrayIndexing.getIndex2()!=null) {
+			arrayIndexing.getIndex2().accept(this, param);	
+			
+			if(!(arrayIndexing.getIndex1() instanceof ArrayType)) {
+				new ErrorType(String.format("%s [%s] is not an array", arrayIndexing.getName(), ((ArrayIndexing)arrayIndexing).getIndex1()), arrayIndexing);
+			}
+
+		}
 
 		return null;
 	}
@@ -123,8 +83,6 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 				|| assignment.getLeftHandSide() instanceof CharLiteral
 				|| assignment.getLeftHandSide() instanceof RealLiteral) {
 			new ErrorType("lvalue required", assignment);
-		}else if(assignment.getLeftHandSide().getType()!=assignment.getRightHandSide().getType()) {
-			new ErrorType("lvalue required", assignment);
 		}else {
 			assignment.getLeftHandSide().accept(this,param);
 			assignment.getRightHandSide().accept(this,param);
@@ -137,8 +95,9 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 	
 	@Override
 	public Void visit(Cast cast, Void param) {
-		
+		cast.setType(cast.getCastType());
 		cast.getExpression().accept(this, null);
+		
 		return null;
 	}
 	
@@ -164,27 +123,18 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 		
 		for(Expression exp:functionCall.getExpressions())
 			exp.accept(this, param);
-		
-		Definition definition = st.find(functionCall.getName());
-		if(definition instanceof FunctionDefinition) {
-			functionCall.setFunctionDefinition((FunctionDefinition)definition);
-		}
-	
-		
-		if(functionCall.getFunctionDefinition()!=null) {
-			List<Type> reqParams=((FunctionType)functionCall.getFunctionDefinition().getType()).getParamType();
-			List<Expression>callArgs=functionCall.getExpressions();
-			if(reqParams.size()!=callArgs.size()) {
-				new ErrorType("Invalid number of params", functionCall);
-			}else {
-				for(int i=0;i<reqParams.size();i++) {
-					Type type=reqParams.get(i);
-					type.assignment(callArgs.get(i).getType(),functionCall);				
-				}
+
+		List<Type> reqParams=((FunctionType)functionCall.getFunctionDefinition().getType()).getParamType();
+		List<Expression>callArgs=functionCall.getExpressions();
+		if(reqParams.size()!=callArgs.size()) {
+			new ErrorType("Invalid number of params", functionCall);
+		}else {
+			for(int i=0;i<reqParams.size();i++) {
+				Type type=reqParams.get(i);
+				type.assignment(callArgs.get(i).getType(),functionCall);				
 			}
-			
 		}
-		
+
 		
 		return null;
 	}
@@ -192,15 +142,10 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 	@Override
 	public Void visit(FunctionDefinition functionDefinition, Void param) {
 
-		if(st.find(functionDefinition.getName())==null)
-			st.insert(functionDefinition);
-		
 		for(VarDefinition varDefinition:functionDefinition.getVariables()) {
 			varDefinition.accept(this, param);
-
 		}
-		
-		
+	
 		for(Statement statement : functionDefinition.getFunctionBody()) {
 			statement.accept(this, param);
 			if(statement instanceof ReturnStatement) {
@@ -209,6 +154,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 				funcReturnType.assignment(returnType, statement);
 			}
 		}
+		
 
 		return null;
 	}
@@ -283,8 +229,6 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 	
 	@Override
 	public Void visit(VarDefinition varDefinition, Void param) {
-		if(st.find(varDefinition.getName())==null)
-			st.insert(varDefinition);
 		return null;
 	}
 	

@@ -25,6 +25,7 @@ public class LexerHelper {
 	public static char lexemeToChar(String str) {
 		char character='\0';
 		if(str!=null) {
+			str=str.substring(1,str.length()-1);
 			byte[] strBytes = str.getBytes();	
 			
 			character = (char)strBytes[0];
